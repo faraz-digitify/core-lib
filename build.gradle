@@ -20,6 +20,19 @@ allprojects {
     repositories {
         maven { url 'https://jitpack.io' }
         google()
+
+        maven {
+            credentials {
+                username "faraz-digitify"
+                password "eRBbQS2XHvwncrDpjUAg"
+            }
+
+            authentication {
+                basic(BasicAuthentication)
+            }
+
+            url "https://api.bitbucket.org/2.0/repositories/mb28/android-yap-permissions/src/releasesLib"
+        }
     }
 }
 

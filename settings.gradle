@@ -1,0 +1,3 @@
+rootProject.name = "TestCoreLib"
+include ':app'
+include ':core'

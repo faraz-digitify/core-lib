@@ -1,35 +1,34 @@
 package com.digitify.core.base
 
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.OnLifecycleEvent
-import androidx.lifecycle.ViewModel
+import android.view.View
+import androidx.lifecycle.*
 import com.digitify.core.base.interfaces.IBase
 import com.digitify.core.base.interfaces.ILifecycle
 import com.digitify.core.sealed.UIEvent
+import kotlinx.coroutines.*
 
 
 abstract class BaseViewModel<S : IBase.State> : ViewModel(),
     ILifecycle, IBase.ViewModel<S> {
     override val clickEvent: SingleClickEvent = SingleClickEvent()
-//    fun launch(dispatcher: Dispatcher = Dispatcher.Background, block: suspend () -> Unit): Job {
-//        return viewModelScope.launch(
-//            when (dispatcher) {
-//                Dispatcher.Main -> Dispatchers.Main
-//                Dispatcher.Background -> Dispatchers.IO
-//                Dispatcher.LongOperation -> Dispatchers.Default
-//            }
-//        ) { block() }
-//    }
-//
-//    fun <T> launchAsync(block: suspend () -> T): Deferred<T> =
-//        viewModelScope.async(Dispatchers.IO) {
-//            block()
-//        }
-//
-//    fun onClick(view: View) {
-//        clickEvent.setValue(view.id)
-//    }
+    fun launch(dispatcher: Dispatcher = Dispatcher.Background, block: suspend () -> Unit): Job {
+        return viewModelScope.launch(
+            when (dispatcher) {
+                Dispatcher.Main -> Dispatchers.Main
+                Dispatcher.Background -> Dispatchers.IO
+                Dispatcher.LongOperation -> Dispatchers.Default
+            }
+        ) { block() }
+    }
+
+    fun <T> launchAsync(block: suspend () -> T): Deferred<T> =
+        viewModelScope.async(Dispatchers.IO) {
+            block()
+        }
+
+    fun onClick(view: View) {
+        clickEvent.setValue(view.id)
+    }
 
     override fun hideLoading(onBackGround: Boolean) {
         if (onBackGround)

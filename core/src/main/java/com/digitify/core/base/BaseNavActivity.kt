@@ -7,11 +7,11 @@ import androidx.annotation.NavigationRes
 import androidx.databinding.ViewDataBinding
 import androidx.navigation.*
 import androidx.navigation.fragment.NavHostFragment
-import com.digitify.core.R
 import com.digitify.core.base.interfaces.IBase
 import com.digitify.core.extensions.addExtras
 import com.digitify.core.extensions.plus
 import com.digitify.core.utils.EXTRA
+import com.digitify.core.R
 
 /**
  * A base BaseNavViewModel Activity with built-in support for Android X Navigation Concept and ViewModel.

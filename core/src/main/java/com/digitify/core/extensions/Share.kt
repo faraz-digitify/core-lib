@@ -7,8 +7,11 @@ import android.content.Intent.*
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.net.Uri
-import android.util.Log
+import android.provider.MediaStore
 import androidx.annotation.Keep
+import androidx.fragment.app.FragmentActivity
+import com.github.florent37.inlineactivityresult.kotlin.startForResult
+import timber.log.Timber
 
 @Keep
         /**
@@ -71,7 +74,7 @@ fun Context.share(
         }
         // success.invoke(true)
     } catch (e: ActivityNotFoundException) {
-        Log.w("ShareKT",e.message!!)
+        Timber.e(e.message!!)
     }
 }
 
@@ -154,7 +157,6 @@ fun Context.openWhatsApp() {
     if (i.resolveActivity(packageManager) != null)
         startActivity(i)
 }
-
 /**
  * Opens the SMS application to send an SMS
  * @param number A phone number to send an SMS
@@ -243,5 +245,63 @@ fun Context.isApplicationInstalledAndEnable(packageName: String): Boolean {
     } catch (e: PackageManager.NameNotFoundException) {
         false
     }
+}
+
+inline fun FragmentActivity.openFilePicker(
+    title: String? = "",
+    noinline completionHandler: ((resultCode: Int, data: Intent?) -> Unit)? = null
+) {
+
+    try {
+        Intent(ACTION_OPEN_DOCUMENT).apply {
+            val mimeTypes = arrayOf("image/*", "application/pdf")
+            putExtra(EXTRA_ALLOW_MULTIPLE, false)
+            addCategory(CATEGORY_OPENABLE)
+            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
+            putExtra(EXTRA_MIME_TYPES, mimeTypes)
+            type = "*/*"
+        }.also {
+            packageManager.queryIntentActivities(it, PackageManager.MATCH_ALL)
+            it.resolveActivity(packageManager)?.run {
+                this@openFilePicker.startForResult(createChooser(it, title ?: "")) { result ->
+                    completionHandler?.invoke(result.resultCode, result.data)
+                }.onFailed { result ->
+                    completionHandler?.invoke(result.resultCode, result.data)
+                }
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
+}
+
+inline fun FragmentActivity.openGallery(
+    title: String? = "",
+    noinline completionHandler: ((resultCode: Int, data: Intent?) -> Unit)? = null
+) {
+
+    try {
+        Intent(ACTION_PICK, MediaStore.Images.Media.INTERNAL_CONTENT_URI).apply {
+            putExtra(EXTRA_ALLOW_MULTIPLE, false)
+            addFlags(FLAG_GRANT_READ_URI_PERMISSION)
+            addFlags(FLAG_GRANT_WRITE_URI_PERMISSION)
+            addFlags(FLAG_ACTIVITY_NEW_TASK)
+            type = "image/*"
+        }.also {
+            packageManager.queryIntentActivities(it, PackageManager.MATCH_ALL)
+            it.resolveActivity(packageManager)?.run {
+                this@openGallery.startForResult(createChooser(it, title ?: "")) { result ->
+                    completionHandler?.invoke(result.resultCode, result.data)
+                }.onFailed { result ->
+                    completionHandler?.invoke(result.resultCode, result.data)
+                }
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+    }
+
 }
 

@@ -13,8 +13,11 @@ import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import com.digitify.core.R
 import com.digitify.core.base.interfaces.IBase
+import com.digitify.core.base.BaseViewModel
+import com.digitify.core.extensions.BetterActivityResult
+import com.digitify.core.extensions.toast
+import com.digitify.core.networkX.showNetworkXSnackBarFire
 import com.digitify.core.sealed.UIEvent
-
 
 /**
 Created by Faheem Riaz on 02/08/2021.
@@ -74,7 +77,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VS : IBase.State, VM : IBase.V
         progress = createProgressDialog(this)
         registerStateListeners()
         performDataBinding(savedInstanceState)
-//        showNetworkXSnackBarFire()
+        showNetworkXSnackBarFire()
         viewModel.clickEvent.observe(this, {
             onClick(it)
         })
@@ -102,7 +105,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VS : IBase.State, VM : IBase.V
         val dialog = Dialog(context)
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE)
         dialog.setCancelable(false)
-//        dialog.setContentView(R.layout.progress_dialog)
+        dialog.setContentView(R.layout.progress_dialog)
         dialog.window?.setLayout(
             WindowManager.LayoutParams.MATCH_PARENT,
             WindowManager.LayoutParams.MATCH_PARENT
@@ -124,7 +127,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VS : IBase.State, VM : IBase.V
 
     fun showToast(msg: String) {
         if (msg.isNotBlank()) {
-//            toast(msg)
+            toast(msg)
         }
     }
 
@@ -134,7 +137,7 @@ abstract class BaseActivity<VB : ViewDataBinding, VS : IBase.State, VM : IBase.V
 
     fun showAlertMessage(msg: String) {
         if (msg.isNotBlank()) {
-//            toast(msg)
+            toast(msg)
         }
     }
 

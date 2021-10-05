@@ -3,6 +3,7 @@ package com.digitify.core.base.interfaces
 import androidx.databinding.ObservableBoolean
 import androidx.lifecycle.MutableLiveData
 import com.digitify.core.base.SingleClickEvent
+import com.digitify.core.base.interfaces.ILifecycle
 import com.digitify.core.sealed.UIEvent
 
 interface IBase {

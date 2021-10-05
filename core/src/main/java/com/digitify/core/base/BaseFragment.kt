@@ -12,8 +12,12 @@ import androidx.annotation.LayoutRes
 import androidx.databinding.DataBindingUtil
 import androidx.databinding.ViewDataBinding
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.digitify.core.base.interfaces.IBase
+import com.digitify.core.extensions.BetterActivityResult
 import com.digitify.core.sealed.UIEvent
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 
 abstract class BaseFragment<VB : ViewDataBinding, VS : IBase.State, VM : IBase.ViewModel<VS>>(@LayoutRes val contentLayoutId: Int) :
     IBase.View<VM>, Fragment(contentLayoutId),
@@ -84,15 +88,15 @@ abstract class BaseFragment<VB : ViewDataBinding, VS : IBase.State, VM : IBase.V
             (activity as BaseActivity<*, *, *>).showAlertMessage(msg)
     }
 
-//    fun launch(dispatcher: Dispatcher = Dispatcher.Main, block: suspend () -> Unit) {
-//        lifecycleScope.launch(
-//            when (dispatcher) {
-//                Dispatcher.Main -> Dispatchers.Main
-//                Dispatcher.Background -> Dispatchers.IO
-//                Dispatcher.LongOperation -> Dispatchers.Default
-//            }
-//        ) { block() }
-//    }
+    fun launch(dispatcher: Dispatcher = Dispatcher.Main, block: suspend () -> Unit) {
+        lifecycleScope.launch(
+            when (dispatcher) {
+                Dispatcher.Main -> Dispatchers.Main
+                Dispatcher.Background -> Dispatchers.IO
+                Dispatcher.LongOperation -> Dispatchers.Default
+            }
+        ) { block() }
+    }
 
     fun setBackButtonDispatcher() {
         onBackPressedCallback = object : OnBackPressedCallback(true) {

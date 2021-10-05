@@ -51,7 +51,10 @@ dependencies {
     //adjust
     api 'com.adjust.sdk:adjust-android:4.28.1'
     implementation 'com.android.installreferrer:installreferrer:2.2'
-    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
+
+    implementation 'androidx.navigation:navigation-runtime-ktx:2.3.5'
+    implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
+    implementation 'androidx.recyclerview:recyclerview:1.2.1'
 }
 repositories {
     mavenCentral()

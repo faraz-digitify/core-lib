@@ -1,4 +1,4 @@
-package com.digitify.core.utils
+package com.digitify.core.extensions
 
 import android.content.ActivityNotFoundException
 import android.content.Context

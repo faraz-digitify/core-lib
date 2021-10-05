@@ -13,6 +13,7 @@ import com.digitify.core.utils.EXTRA
 import com.digitify.core.utils.FRAGMENT_CLASS
 import com.digitify.core.utils.SHOW_TOOLBAR
 import com.digitify.core.utils.TOOLBAR_TITLE
+import com.github.florent37.inlineactivityresult.kotlin.startForResult
 
 /**
  * Extensions for simpler launching of Activities
@@ -66,11 +67,11 @@ inline fun <reified T : Any> FragmentActivity.launchActivityForResult(
         val intent = newIntent<T>(this)
         intent.init()
         intent.putExtra(EXTRA, options)
-//        this@launchActivityForResult.startForResult(intent) { result ->
-//            it.invoke(result.resultCode, result.data)
-//        }.onFailed { result ->
-//            it.invoke(result.resultCode, result.data)
-//        }
+        this@launchActivityForResult.startForResult(intent) { result ->
+            it.invoke(result.resultCode, result.data)
+        }.onFailed { result ->
+            it.invoke(result.resultCode, result.data)
+        }
     } ?: run {
         launchActivity<T>(
             requestCode = requestCode,
@@ -103,11 +104,11 @@ inline fun <reified T : Any> Fragment.launchActivityForResult(
         val intent = newIntent<T>(requireContext())
         intent.init()
         intent.putExtra(EXTRA, options)
-//        this.startForResult(intent) { result ->
-//            it.invoke(result.resultCode, result.data)
-//        }.onFailed { result ->
-//            it.invoke(result.resultCode, result.data)
-//        }
+        this.startForResult(intent) { result ->
+            it.invoke(result.resultCode, result.data)
+        }.onFailed { result ->
+            it.invoke(result.resultCode, result.data)
+        }
     } ?: run {
         launchActivity<T>(clearPrevious = clearPrevious, options = options)
     }
@@ -185,11 +186,11 @@ inline fun <reified a : AppCompatActivity> Fragment.startFragmentForResult(
         intent.putExtra(EXTRA, bundle)
         intent.putExtra(SHOW_TOOLBAR, showToolBar)
         intent.putExtra(TOOLBAR_TITLE, toolBarTitle)
-//        this.startForResult(intent) { result ->
-//            completionHandler.invoke(result.resultCode, result.data)
-//        }.onFailed { result ->
-//            completionHandler.invoke(result.resultCode, result.data)
-//        }
+        this.startForResult(intent) { result ->
+            completionHandler.invoke(result.resultCode, result.data)
+        }.onFailed { result ->
+            completionHandler.invoke(result.resultCode, result.data)
+        }
 
     } catch (e: Exception) {
         if (e is ClassNotFoundException) {
